@@ -1,10 +1,16 @@
-#include"SystemManager.h"
-#include"DxLib.h"
+#include "DxLib.h"
 
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	if (DxLib_Init() == -1) {
+		return -1;
+	}
 
-	SystemManager MainRoop;
+	DrawPixel(320, 240, GetColor(255, 255, 255));
 
-	MainRoop.Update();
+	WaitKey();
 
+	DxLib_End();
+
+	return 0;
 }
