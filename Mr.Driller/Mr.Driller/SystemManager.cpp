@@ -1,5 +1,6 @@
 #include "systemManager.h"
 #include"DxLib.h"
+#include"ERROR.h"
 
 
 SystemManager::SystemManager()
@@ -9,7 +10,15 @@ SystemManager::SystemManager()
 SystemManager::~SystemManager()
 {
 }
+void SystemManager::gameEnd() {
 
+	MessageBox(NULL, "プログラムを終了しました。", "END", MB_OK);
+	DxLib_End();
+
+	return;
+}
+
+ 
 /*
 * SystemManager::gameIsInit(ウインドウの縦画面の長さ, ウインドウの横画面の長さ)
 *起動時一度だけ行う初期化処理
@@ -17,11 +26,9 @@ SystemManager::~SystemManager()
 */
 bool SystemManager::gameIsInit(int width, int height) {
 	
-	//閉じるボタンが押されたときにシステムが正常に終了するための処理を定義する関数
-	LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	
 	//ウインドウの名前を設定する
-	SetMainWindowText("Mr.Driller");
+	SetMainWindowText("ミスタードリラー");
 
 	//ウインドウサイズを取得する
 	SetWindowSize(width, height);
@@ -35,12 +42,10 @@ bool SystemManager::gameIsInit(int width, int height) {
 	//ウインドウモードを設定する　TRUE：ウインドウモード　FALSE：フルスクリーンモード
 	ChangeWindowMode(TRUE);
 
-	//閉じるボタンが押されたときにシステムが正常に終了するための処理をする関数
-	SetHookWinProc(WndProc);
-
 	//DXライブラリの初期化、裏画面のセット　返り値　TRUE：成功 FALSE：失敗
 	if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0) {
-		SystemManager::endFlag = false;
+
+		RenderError(-1);
 	}
 	else {
 		SystemManager::endFlag = true;
@@ -55,9 +60,5 @@ int SystemManager::upDate() {
 	
 
 
-
-}
-void SystemManager::gameEnd() {
-
-	DxLib_End();
+	return 0;
 }
