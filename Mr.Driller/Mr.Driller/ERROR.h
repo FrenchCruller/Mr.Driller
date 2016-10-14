@@ -6,14 +6,13 @@ void RenderError(int ErrorCord) {
 
 	switch (ErrorCord) {
 	case -1:
-		MessageBox(NULL, "èâä˙âªÇ…é∏îsÇµÇ‹ÇµÇΩÅB", "ERROR -1", MB_OK);
-		SysMgr.gameEnd();
+		MessageBox(NULL, "ERROR CODE:-1", "ERROR", MB_OK);
 		exit(-1);
 		break;
 	}
 
 
-	SysMgr.endFlag = false;
+	SysMgr.errorEndFlag = false;
 
 	return;
 

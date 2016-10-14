@@ -10,28 +10,56 @@ SystemManager::SystemManager()
 SystemManager::~SystemManager()
 {
 }
-void SystemManager::gameEnd() {
 
-	MessageBox(NULL, "プログラムを終了しました。", "END", MB_OK);
+void SystemManager::GameEnd() {
+
 	DxLib_End();
 
 	return;
 }
 
+void SystemManager::GetWindowMode(int width, int height) {
+	
+		int flag;
+		flag = MessageBox(NULL,"フルスクリーンモードで起動しますか？","スクリーン設定",MB_YESNO | MB_ICONQUESTION);
+		if (flag == IDNO)
+			ChangeWindowMode(TRUE);
+			SetWindowSize(width, height);
+
+}
+/*
+*SystemManager::IsGameEnd();
+*ゲーム終了時、本当にゲームを終了するか確認し、誤操作を防ぐ
+*TRUE：終了　FALSE：継続
+*/
+
+bool SystemManager::IsGameEnd() {
+
+	//ホップアップウインドウの設定　戻り値　TRUE：終了　FALSE：継続
+	systemEndFlag = MessageBox(NULL, "プログラムを終了しますか？", "END", MB_YESNO | MB_ICONQUESTION);
+
+	if (systemEndFlag == IDNO) {
+		endFlag = true;
+	}
+	else {
+		endFlag = false;
+	}
+	
+	return	endFlag;
+}
  
 /*
-* SystemManager::gameIsInit(ウインドウの縦画面の長さ, ウインドウの横画面の長さ)
+* SystemManager::gameIsInit()
 *起動時一度だけ行う初期化処理
 *戻り値　TRUE：成功　FALSE：失敗
 */
-bool SystemManager::gameIsInit(int width, int height) {
-	
+bool SystemManager::GameIsInit() {
+
+	//ウインドウモードを設定する　TRUE：ウインドウモード　FALSE：フルスクリーンモード
+	SystemManager::GetWindowMode(600,400);
 	
 	//ウインドウの名前を設定する
-	SetMainWindowText("ミスタードリラー");
-
-	//ウインドウサイズを取得する
-	SetWindowSize(width, height);
+	SetMainWindowText("ミスタードリラー");	
 
 	//マウスカーソルを表示するか設定する　TRUE：表示　FALSE：非表示
 	int GetMouseDispFlag(TRUE);
@@ -39,25 +67,22 @@ bool SystemManager::gameIsInit(int width, int height) {
 	//ウインドウの二重生成ができるかを設定する　TRUE：可能　FALSE：不可能
 	SetDoubleStartValidFlag(FALSE);
 	
-	//ウインドウモードを設定する　TRUE：ウインドウモード　FALSE：フルスクリーンモード
-	ChangeWindowMode(TRUE);
-
-	//DXライブラリの初期化、裏画面のセット　返り値　TRUE：成功 FALSE：失敗
+	//DXライブラリの初期化、裏画面のセット　返り値　TRUE：成功  FALSE：失敗
 	if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0) {
-
 		RenderError(-1);
 	}
 	else {
-		SystemManager::endFlag = true;
+		SystemManager::errorEndFlag = true;
 	}
 
-	return SystemManager::endFlag;
+	return SystemManager::errorEndFlag;
 }
 
-int SystemManager::upDate() {
+int SystemManager::Update() {
 
-	
-	
+
+	ClearDrawScreen();
+	ScreenFlip();
 
 
 	return 0;

@@ -5,13 +5,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SystemManager SysMgr;
 
-	if( SysMgr.gameIsInit(600,400) == false) return -1;
+	SysMgr.GameIsInit();
 
-	while (ProcessMessage() != -1 && CheckHitKey(KEY_INPUT_ESCAPE) != 1) {
+	while (ProcessMessage() != -1  && SysMgr.errorEndFlag != false) {
 
-		if (SysMgr.endFlag == false) break;
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) {
+			SysMgr.endFlag = SysMgr.IsGameEnd();
+			if (SysMgr.endFlag == false)break;
+		}
+
+	SysMgr.Update();
+		
 	}
-
-	SysMgr.gameEnd();
+	
+	SysMgr.GameEnd();
 	return 0;
 }

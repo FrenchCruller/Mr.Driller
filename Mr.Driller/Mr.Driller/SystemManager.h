@@ -4,20 +4,25 @@
 #include"DxLib.h"
 
 class SystemManager{
-	
+private:
+	int systemEndFlag;
 public:
 	SystemManager();
 	~SystemManager();
 
-	bool gameIsInit(int, int);
+	bool GameIsInit();
 
-	void gameEnd();
+	void GameEnd();
 
-	int upDate();
-	
-	
+	int Update();
 
+	void GetWindowMode(int, int);
+	bool IsGameEnd();
+
+	bool errorEndFlag = false;
 	bool endFlag = false;
+	
 };
+
 
 #endif // !_SYSTEM_MANAGER_H_
