@@ -6,22 +6,17 @@
 class SystemManager{
 private:
 	int systemEndFlag;
+	void GameIsInit();
+	void GameEnd();
+	bool IsGameEnd();
+	bool endFlag = false;
+
 public:
 	SystemManager();
 	~SystemManager();
 
-	bool GameIsInit();
-
-	void GameEnd();
-
 	int Update();
-
 	void GetWindowMode(int, int);
-	bool IsGameEnd();
-
-	bool errorEndFlag = false;
-	bool endFlag = false;
-	
 };
 
 

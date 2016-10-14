@@ -1,14 +1,16 @@
 #include "systemManager.h"
 #include"DxLib.h"
-#include"ERROR.h"
+#include"DebugManager.h"
 
 
 SystemManager::SystemManager()
 {
+	this -> GameIsInit();
 }
 
 SystemManager::~SystemManager()
 {
+	this -> GameEnd();
 }
 
 void SystemManager::GameEnd() {
@@ -39,6 +41,7 @@ bool SystemManager::IsGameEnd() {
 	systemEndFlag = MessageBox(NULL, "プログラムを終了しますか？", "END", MB_YESNO | MB_ICONQUESTION);
 
 	if (systemEndFlag == IDNO) {
+
 		endFlag = true;
 	}
 	else {
@@ -53,10 +56,10 @@ bool SystemManager::IsGameEnd() {
 *起動時一度だけ行う初期化処理
 *戻り値　TRUE：成功　FALSE：失敗
 */
-bool SystemManager::GameIsInit() {
+void SystemManager::GameIsInit() {
 
 	//ウインドウモードを設定する　TRUE：ウインドウモード　FALSE：フルスクリーンモード
-	SystemManager::GetWindowMode(600,400);
+	this -> GetWindowMode(600,400);
 	
 	//ウインドウの名前を設定する
 	SetMainWindowText("ミスタードリラー");	
@@ -69,21 +72,28 @@ bool SystemManager::GameIsInit() {
 	
 	//DXライブラリの初期化、裏画面のセット　返り値　TRUE：成功  FALSE：失敗
 	if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0) {
-		RenderError(-1);
-	}
-	else {
-		SystemManager::errorEndFlag = true;
-	}
 
-	return SystemManager::errorEndFlag;
+		DebugManager::Instance()->RenderError(DebugManager::RenderErrorType::FailedInit);
+	
+	}
 }
 
 int SystemManager::Update() {
 
+	// DebugManager::Instance().ErrorEndFlag();
+	// DebugManager::Instance().RenderError(id);
 
-	ClearDrawScreen();
-	ScreenFlip();
+	while (ProcessMessage() != -1 && DebugManager::Instance()->GetEndFlag() != false) {
 
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) {
+
+			this->endFlag = this->IsGameEnd();
+			if (this->endFlag == false)break;
+		}
+
+		ClearDrawScreen();
+		ScreenFlip();
+	}
 
 	return 0;
 }
