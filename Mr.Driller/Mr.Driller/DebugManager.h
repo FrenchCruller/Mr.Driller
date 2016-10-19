@@ -6,15 +6,17 @@ private:
 	bool errorEndFlag;
 
 public:
+	~DebugManager();
 
 	enum  class RenderErrorType
 	{
 		FailedInit = 0,
 
+
 	};
 
 	static DebugManager* Instance();
-	~DebugManager();
+	
 	void RenderError(RenderErrorType);
 
 	bool GetEndFlag();

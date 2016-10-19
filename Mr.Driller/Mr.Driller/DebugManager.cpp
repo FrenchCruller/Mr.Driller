@@ -20,6 +20,7 @@ void DebugManager::RenderError(RenderErrorType errorCode){
 		MessageBox(NULL, "ERROR CODE:-1", "ERROR", MB_OK);
 		break;
 	}
+
 	errorEndFlag = false;
 }
 

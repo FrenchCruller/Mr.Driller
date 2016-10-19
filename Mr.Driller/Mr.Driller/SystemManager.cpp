@@ -5,12 +5,12 @@
 
 SystemManager::SystemManager()
 {
-	this -> GameIsInit();
+	this->GameIsInit();
 }
 
 SystemManager::~SystemManager()
 {
-	this -> GameEnd();
+	this->GameEnd();
 }
 
 void SystemManager::GameEnd() {
@@ -38,7 +38,7 @@ void SystemManager::GetWindowMode(int width, int height) {
 bool SystemManager::IsGameEnd() {
 
 	//ホップアップウインドウの設定　戻り値　TRUE：終了　FALSE：継続
-	systemEndFlag = MessageBox(NULL, "プログラムを終了しますか？", "END", MB_YESNO | MB_ICONQUESTION);
+	systemEndFlag = MessageBox(GetMainWindowHandle() , "プログラムを終了しますか？", "END", MB_YESNO | MB_ICONQUESTION);
 
 	if (systemEndFlag == IDNO) {
 
@@ -59,7 +59,7 @@ bool SystemManager::IsGameEnd() {
 void SystemManager::GameIsInit() {
 
 	//ウインドウモードを設定する　TRUE：ウインドウモード　FALSE：フルスクリーンモード
-	this -> GetWindowMode(600,400);
+	this->GetWindowMode(600, 400);
 	
 	//ウインドウの名前を設定する
 	SetMainWindowText("ミスタードリラー");	
@@ -90,6 +90,7 @@ int SystemManager::Update() {
 			this->endFlag = this->IsGameEnd();
 			if (this->endFlag == false)break;
 		}
+
 
 		ClearDrawScreen();
 		ScreenFlip();
